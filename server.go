@@ -53,7 +53,7 @@ func getLogger() *zap.Logger {
 		TimeKey:        "time",
 		LevelKey:       "level",
 		NameKey:        "logger",
-		CallerKey:      "linenum",
+		//CallerKey:      "linenum",
 		MessageKey:     "msg",
 		StacktraceKey:  "stacktrace",
 		LineEnding:     zapcore.DefaultLineEnding,
