@@ -44,7 +44,7 @@ func getLogger() *zap.Logger {
 	hook := lumberjack.Logger{
 		Filename:   "./logFile/log1.log", // 日志文件路径
 		MaxSize:    10,                      // 每个日志文件保存的最大尺寸 单位：M
-		MaxBackups: 30,                       // 日志文件最多保存多少个备份
+		MaxBackups: 20,                       // 日志文件最多保存多少个备份
 		MaxAge:     2,                        // 文件最多保存多少天
 		Compress:   true,                     // 是否压缩
 	}
