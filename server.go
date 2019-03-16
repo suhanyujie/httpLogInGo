@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"practice/telegramApi/apiImpl"
 )
 
 var logger *zap.Logger
@@ -17,10 +18,15 @@ func main() {
 	logger = getLogger()
 	go func(ch1 <-chan string) {
 		var tempCont = ""
+		var mdWrapContent = ""
 		for {
 			select {
 			case tempCont=<-ch1:
 				logger.Info(tempCont)
+				mdWrapContent = "\n``` \n" +
+					tempCont +
+					"\n```\n"
+				apiImpl.SendMessage(mdWrapContent)
 			}
 		}
 	}(logConChan)
