@@ -8,25 +8,33 @@ import (
 	"net/http"
 	"os"
 	"practice/telegramApi/apiImpl"
+	"time"
 )
 
 var logger *zap.Logger
 var logConChan chan string
 
+// 记录一下运行的时间
+var startTime = time.Now().Unix()
+
 func main() {
 	logConChan = make(chan string, 1024)
 	logger = getLogger()
 	go func(ch1 <-chan string) {
+		var mdWrapStr = ""
 		var tempCont = ""
-		var mdWrapContent = ""
 		for {
 			select {
+			// 从接收到的通道中拿出日志
 			case tempCont=<-ch1:
-				logger.Info(tempCont)
-				mdWrapContent = "\n``` \n" +
+				mdWrapStr = "```\n" +
 					tempCont +
 					"\n```\n"
-				apiImpl.SendMessage(mdWrapContent)
+				// 1.记录到日志文件中
+				logger.Info(tempCont)
+				// 2.发送到telegram信息提醒群中
+				apiImpl.SendMessage(mdWrapStr)
+				// ...
 			}
 		}
 	}(logConChan)
