@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"practice/telegramApi/apiImpl"
+	"github.com/suhanyujie/telegramApi/apiImpl"
 	"time"
 )
 
@@ -54,6 +54,7 @@ func HandleLog(w http.ResponseWriter,r *http.Request)  {
 	w.Write([]byte(resRes))
 }
 
+// 获取基于zap的日志器
 func getLogger() *zap.Logger {
 	hook := lumberjack.Logger{
 		Filename:   "./logFile/log1.log", // 日志文件路径
