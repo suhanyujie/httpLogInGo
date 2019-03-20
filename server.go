@@ -18,7 +18,7 @@ var logConChan chan string
 var startTime = time.Now().Unix()
 
 func main() {
-	logConChan = make(chan string, 1024)
+	logConChan = make(chan string, 2048)
 	logger = getLogger()
 	go func(ch1 <-chan string) {
 		var mdWrapStr = ""
@@ -34,7 +34,8 @@ func main() {
 				logger.Info(tempCont)
 				// 2.发送到telegram信息提醒群中
 				apiImpl.SendMessage(mdWrapStr)
-				// ...
+				// 3.记录到数据库中
+
 			}
 		}
 	}(logConChan)
