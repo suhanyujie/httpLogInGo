@@ -36,11 +36,11 @@ func main() {
 				// 解析内容，并将key拿出，作为md文档的标题
 				logMsg = parsers.ParseLogMsg(logMsgJson)
 				log.Println(logMsg.Key)
-				mdWrapStr = "\n## "+logMsg.Key+" \n\n" +
+				mdWrapStr = "\n*"+logMsg.Key+"* \n\n" +
 					"```\n" +
 					logMsgJson +
 					"\n```\n"
-				apiImpl.SendMessage(mdWrapStr)
+				apiImpl.SendMessage(mdWrapStr,"Markdown")
 				// 3.记录到数据库中
 				_, err := store.InsertOneLogMsg(logMsgJson)
 				if err != nil {
