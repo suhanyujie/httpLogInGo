@@ -2,6 +2,7 @@ package parsers
 
 import (
 	"fmt"
+	"log"
 	"testing"
 )
 
@@ -12,4 +13,13 @@ func TestParseLogInfo(t *testing.T) {
 		t.Error(err)
 	}
 	fmt.Println(logData.Msg)
+}
+
+func TestParseTime(t *testing.T) {
+	var timeStr = "2019-03-21 12:49:03"
+	t1,err := ParseTime(timeStr)
+	if err!= nil {
+		t.Error(err)
+	}
+	log.Println(t1)
 }

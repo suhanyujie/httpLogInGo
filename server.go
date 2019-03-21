@@ -4,6 +4,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"httpLogInGo/store"
 	"log"
 	"net/http"
 	"os"
@@ -35,7 +36,10 @@ func main() {
 				// 2.发送到telegram信息提醒群中
 				apiImpl.SendMessage(mdWrapStr)
 				// 3.记录到数据库中
-
+				_,err := store.InsertOneLog(tempCont)
+				if err!= nil {
+					log.Println(err)
+				}
 			}
 		}
 	}(logConChan)
