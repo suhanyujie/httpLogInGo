@@ -5,6 +5,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"httpLogInGo/parsers"
 	"httpLogInGo/store"
 	"log"
 	"net/http"
@@ -23,20 +24,25 @@ func main() {
 	logger = getLogger()
 	go func(ch1 <-chan string) {
 		var mdWrapStr = ""
-		var logContent = ""
+		var logMsgJson = ""
+		var logMsg = new(parsers.LogMsg);
 		for {
 			select {
 			// 从接收到的通道中拿出日志
-			case logContent = <-ch1:
-				mdWrapStr = "```\n" +
-					logContent +
-					"\n```\n"
+			case logMsgJson = <-ch1:
 				// 1.记录到日志文件中
-				logger.Info(logContent)
+				logger.Info(logMsgJson)
 				// 2.发送到telegram信息提醒群中
+				// 解析内容，并将key拿出，作为md文档的标题
+				logMsg = parsers.ParseLogMsg(logMsgJson)
+				log.Println(logMsg.Key)
+				mdWrapStr = "\n## "+logMsg.Key+" \n\n" +
+					"```\n" +
+					logMsgJson +
+					"\n```\n"
 				apiImpl.SendMessage(mdWrapStr)
 				// 3.记录到数据库中
-				_, err := store.InsertOneLog(logContent)
+				_, err := store.InsertOneLogMsg(logMsgJson)
 				if err != nil {
 					log.Println(err)
 				}
