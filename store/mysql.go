@@ -42,8 +42,17 @@ type Content1 struct {
 
 type LogContent Content1
 
+func InsertOneLog(logContent string) (effectNum int64, err error) {
+	log1 := parsers.LogInfo{}
+	log1, err = parsers.ParseLogInfo([]byte(logContent))
+	if err != nil {
+		log.Println(err)
+	}
+	return InsertOneLogMsg(log1.Msg)
+}
+
 // 向数据就中插入一条数据
-func InsertOneLog(msgContent string) (effectNum int64, err error) {
+func InsertOneLogMsg(msgContent string) (effectNum int64, err error) {
 	logMsg1 := new(parsers.LogMsg)
 	// 将content转为结构体 LogMsg，便于获取其中的信息
 	logMsg1 = parsers.ParseLogMsg(msgContent)

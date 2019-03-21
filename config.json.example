@@ -1,5 +1,10 @@
 {
   "BaseUrl": "https://api.telegram.org",
-  "ApiToken":"123321456:AsexxxxxxxdsxxxpsQIt_4bq1_-gt2yasdasdFd0tY"
+  "ApiToken":"123431312:AAaDASDaIt_4badaq1_-gqwefdsBADFd0tY",
+  "DB": {
+    "host": "127.0.0.1",
+    "user": "root",
+    "passwd": "123456",
+    "database": "test"
+  }
 }
-

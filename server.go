@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/suhanyujie/telegramApi/apiImpl"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -8,7 +9,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"github.com/suhanyujie/telegramApi/apiImpl"
 	"time"
 )
 
@@ -23,21 +23,21 @@ func main() {
 	logger = getLogger()
 	go func(ch1 <-chan string) {
 		var mdWrapStr = ""
-		var tempCont = ""
+		var logContent = ""
 		for {
 			select {
 			// 从接收到的通道中拿出日志
-			case tempCont=<-ch1:
+			case logContent = <-ch1:
 				mdWrapStr = "```\n" +
-					tempCont +
+					logContent +
 					"\n```\n"
 				// 1.记录到日志文件中
-				logger.Info(tempCont)
+				logger.Info(logContent)
 				// 2.发送到telegram信息提醒群中
 				apiImpl.SendMessage(mdWrapStr)
 				// 3.记录到数据库中
-				_,err := store.InsertOneLog(tempCont)
-				if err!= nil {
+				_, err := store.InsertOneLog(logContent)
+				if err != nil {
 					log.Println(err)
 				}
 			}
@@ -46,15 +46,15 @@ func main() {
 	//  启动http服务器
 	http.HandleFunc("/log", HandleLog)
 	log.Println("http server start in port 8002.")
-	http.ListenAndServe(":8002",nil)
+	http.ListenAndServe(":8002", nil)
 }
 
-func HandleLog(w http.ResponseWriter,r *http.Request)  {
+func HandleLog(w http.ResponseWriter, r *http.Request) {
 	var resRes = `{"status":"1","msg":"ok!"}`
 	var val = r.FormValue("value")
 	log.Println(val)
 	go func(val string) {
-		logConChan<-val
+		logConChan <- val
 	}(val)
 	w.Write([]byte(resRes))
 }
@@ -63,16 +63,16 @@ func HandleLog(w http.ResponseWriter,r *http.Request)  {
 func getLogger() *zap.Logger {
 	hook := lumberjack.Logger{
 		Filename:   "./logFile/log1.log", // 日志文件路径
-		MaxSize:    10,                      // 每个日志文件保存的最大尺寸 单位：M
-		MaxBackups: 20,                       // 日志文件最多保存多少个备份
-		MaxAge:     2,                        // 文件最多保存多少天
-		Compress:   true,                     // 是否压缩
+		MaxSize:    10,                   // 每个日志文件保存的最大尺寸 单位：M
+		MaxBackups: 20,                   // 日志文件最多保存多少个备份
+		MaxAge:     2,                    // 文件最多保存多少天
+		Compress:   true,                 // 是否压缩
 	}
 
 	encoderConfig := zapcore.EncoderConfig{
-		TimeKey:        "time",
-		LevelKey:       "level",
-		NameKey:        "logger",
+		TimeKey:  "time",
+		LevelKey: "level",
+		NameKey:  "logger",
 		//CallerKey:      "linenum",
 		MessageKey:     "msg",
 		StacktraceKey:  "stacktrace",
