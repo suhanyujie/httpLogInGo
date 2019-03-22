@@ -36,7 +36,7 @@ func main() {
 				// 解析内容，并将key拿出，作为md文档的标题
 				logMsg = parsers.ParseLogMsg(logMsgJson)
 				log.Println(logMsg.Key)
-				mdWrapStr = "\n*"+logMsg.Key+"* \n\n" +
+				mdWrapStr = "\n*"+logMsg.Key+"* \n" +
 					"```\n" +
 					logMsgJson +
 					"\n```\n"

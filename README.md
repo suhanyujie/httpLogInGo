@@ -5,7 +5,12 @@
 * zap
 * go 1.11+
 
+### config
+* 项目目录下 `cp config.json.example config.json`
+* 配置上自己的ApiToken 以及 数据库配置
+
 ### build
+* 根据自己的环境，调整编译的命令
 * `go build -o logServer.exe server.go`
 
 ### run 
