@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/suhanyujie/telegramApi/apiImpl"
+	"telegramApi/apiImpl"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"

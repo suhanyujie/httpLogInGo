@@ -5,6 +5,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/core"
 	"github.com/go-xorm/xorm"
+	"httpLogInGo/config"
 	"httpLogInGo/parsers"
 	"log"
 	"time"
@@ -16,7 +17,8 @@ var prefixStr = "log_"
 // 初始化数据库
 func init() {
 	var err error
-	dataSource := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8", "root", "123456", "127.0.0.1", "3306", "logger")
+	dbConfig := config.ConfigData.DB
+	dataSource := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8", dbConfig.User, dbConfig.Passwd, dbConfig.Host, "3306", dbConfig.Database)
 	engine, err = xorm.NewEngine("mysql", dataSource)
 	tbMapper := core.NewPrefixMapper(core.SnakeMapper{}, prefixStr)
 	engine.SetTableMapper(tbMapper)
