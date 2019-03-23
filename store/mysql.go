@@ -56,7 +56,6 @@ func InsertOneLogMsg(msgContent string) (effectNum int64, err error) {
 	logMsg1 := new(parsers.LogMsg)
 	// 将content转为结构体 LogMsg，便于获取其中的信息
 	logMsg1 = parsers.ParseLogMsg(msgContent)
-	log.Println(msgContent)
 	insertData := new(Content1)
 	if err != nil {
 		return 0, err

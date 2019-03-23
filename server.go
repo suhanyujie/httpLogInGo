@@ -19,6 +19,14 @@ var logConChan chan string
 // 记录一下运行的时间
 var startTime = time.Now().Unix()
 
+func init()  {
+	// 检查数据库
+	_, err := store.CheckTableIsOk()
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
+
 func main() {
 	logConChan = make(chan string, 2048)
 	logger = getLogger()
@@ -35,8 +43,7 @@ func main() {
 				// 2.发送到telegram信息提醒群中
 				// 解析内容，并将key拿出，作为md文档的标题
 				logMsg = parsers.ParseLogMsg(logMsgJson)
-				log.Println(logMsg.Key)
-				mdWrapStr = "\n*"+logMsg.Key+"* \n" +
+				mdWrapStr = "\n*日志key："+logMsg.Key+"*\n" +
 					"```\n" +
 					logMsgJson +
 					"\n```\n"
