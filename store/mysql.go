@@ -35,7 +35,7 @@ type Content1 struct {
 	Request     string    `xorm:"'request' text notnull"`                       // comment '日志字段request'
 	Response    string    `xorm:"'response' text notnull"`                      // comment '日志字段response'
 	Ip          string    `xorm:"'ip' varchar(20) notnull default ''"`          //  comment '日志来源ip'
-	Create_time time.Time `xorm:"create_time" `                                 // comment '日志新增时间'
+	Create_time time.Time `xorm:"create_time index(create_time_index)" `        // comment '日志新增时间'
 	Update_time time.Time `xorm:"update_time" `                                 // comment '日志更新时间'
 	DeleteFlag  int       `xorm:"delete_flag"`                                  //  comment '删除标记'
 }
