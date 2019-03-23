@@ -57,9 +57,21 @@ func main() {
 		}
 	}(logConChan)
 	//  启动http服务器
-	http.HandleFunc("/log", HandleLog)
+	http.HandleFunc("/log", SafeHandle(HandleLog))
 	log.Println("http server start in port 8002.")
 	http.ListenAndServe(":8002", nil)
+}
+
+func SafeHandle(fn http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		defer func() {
+			if err, ok := recover().(error); ok {
+				http.Error(w, err.Error() , http.StatusInternalServerError)
+				log.Println("WARN:panic in %v-%v", fn, err)
+			}
+		}()
+		fn(w,r)
+	}
 }
 
 func HandleLog(w http.ResponseWriter, r *http.Request) {
