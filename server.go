@@ -1,7 +1,6 @@
 package main
 
 import (
-	"telegramApi/apiImpl"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -10,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"telegramApi/apiImpl"
 	"time"
 )
 

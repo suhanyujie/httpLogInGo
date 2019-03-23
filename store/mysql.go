@@ -37,7 +37,8 @@ type Content1 struct {
 	Request     string    `xorm:"'request' text notnull"`                       // comment '日志字段request'
 	Response    string    `xorm:"'response' text notnull"`                      // comment '日志字段response'
 	Ip          string    `xorm:"'ip' varchar(20) notnull default ''"`          //  comment '日志来源ip'
-	Create_time time.Time `xorm:"create_time index(create_time_index)" `        // comment '日志新增时间'
+	Log_time    time.Time `xorm:"log_time index(log_time_index)" `              // comment '日志中的时间'
+	Create_time time.Time `xorm:"create_time"`                                  // comment '日志新增时间'
 	Update_time time.Time `xorm:"update_time" `                                 // comment '日志更新时间'
 	DeleteFlag  int       `xorm:"delete_flag"`                                  //  comment '删除标记'
 }
@@ -65,8 +66,9 @@ func InsertOneLogMsg(msgContent string) (effectNum int64, err error) {
 	// 字符串转为时间格式
 	t1, err := parsers.ParseTime(logMsg1.Time)
 	if err != nil {
-		return 0, err;
+		return 0, err
 	}
+	nowTime := time.Now().UTC()
 	insertData.Event = logMsg1.Event
 	insertData.Type = logMsg1.Type
 	insertData.Key = logMsg1.Key
@@ -74,11 +76,12 @@ func InsertOneLogMsg(msgContent string) (effectNum int64, err error) {
 	insertData.Request = logMsg1.Request
 	insertData.Response = logMsg1.Response
 	insertData.Ip = logMsg1.Ip
-	insertData.Create_time = t1
-	insertData.Update_time = t1
+	insertData.Log_time = t1
+	insertData.Create_time = nowTime
+	insertData.Update_time = nowTime
 	effectNum, err = engine.Insert(insertData)
 	if err != nil {
-		return 0, err;
+		return 0, err
 	}
 
 	return effectNum, err

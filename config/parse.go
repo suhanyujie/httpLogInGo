@@ -2,6 +2,7 @@ package config
 
 import (
 	"encoding/json"
+	"flag"
 	"io/ioutil"
 	"log"
 	"os"
@@ -20,16 +21,14 @@ type DB struct {
 	Database string `json:"database"`
 }
 
+var configPath *string
 var ConfigData = &Config{}
 
 func init()  {
-	var (
-		err error
-	)
-	_,err = ParseConfig("../config.json")
-	if err!= nil {
-		log.Println(err)
-	}
+	configPath = flag.String("c","../config.json","set config path:-c=config.json")
+	flag.Parse()
+	//解析配置文件
+	ParseConfig(*configPath)
 }
 
 // 解析json中的配置项
