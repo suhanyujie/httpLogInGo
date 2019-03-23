@@ -26,7 +26,7 @@ func init()  {
 	var (
 		err error
 	)
-	_,err = ParseConfig("config.json")
+	_,err = ParseConfig("../config.json")
 	if err!= nil {
 		log.Println(err)
 	}
