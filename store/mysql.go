@@ -29,18 +29,20 @@ func init() {
 
 // 日志内容表1
 type Content1 struct {
-	Id          uint64    `xorm:"id pk not null autoincr "`                     // comment '主键'
-	Event       string    `xorm:"'event' varchar(100) notnull "`                // comment '日志事件名称'
-	Type        string    `xorm:"'type' varchar(18) notnull "`                  // comment '日志级别'
-	Key         string    `xorm:"'key' index(key_index) varchar(200) notnull "` // comment '日志key，标签'，加索引
-	Content     string    `xorm:"'content' text notnull "`                      // comment '日志内容'
-	Request     string    `xorm:"'request' text notnull"`                       // comment '日志字段request'
-	Response    string    `xorm:"'response' text notnull"`                      // comment '日志字段response'
-	Ip          string    `xorm:"'ip' varchar(20) notnull default ''"`          //  comment '日志来源ip'
-	Log_time    time.Time `xorm:"log_time index(log_time_index)" `              // comment '日志中的时间'
-	Create_time time.Time `xorm:"create_time"`                                  // comment '日志新增时间'
-	Update_time time.Time `xorm:"update_time" `                                 // comment '日志更新时间'
-	DeleteFlag  int       `xorm:"delete_flag"`                                  //  comment '删除标记'
+	Id          uint64    `xorm:"id pk not null autoincr "`                               // comment '主键'
+	Event       string    `xorm:"'event' varchar(100) notnull "`                          // comment '日志事件名称'
+	Type        string    `xorm:"'type' varchar(18) notnull "`                            // comment '日志级别'
+	Key         string    `xorm:"'key' index(key_index) varchar(200) notnull "`           // comment '日志key，标签'，加索引
+	ExtCol1     string    `xorm:"'ext_col1' index(ext_col1_index) varchar(200) notnull "` // comment 扩展字段1
+	ExtCol2     string    `xorm:"'ext_col2' index(ext_col2_index) varchar(200) notnull "` // comment 扩展字段2
+	Content     string    `xorm:"'content' text notnull "`                                // comment '日志内容'
+	Request     string    `xorm:"'request' text notnull"`                                 // comment '日志字段request'
+	Response    string    `xorm:"'response' text notnull"`                                // comment '日志字段response'
+	Ip          string    `xorm:"'ip' varchar(20) notnull default ''"`                    //  comment '日志来源ip'
+	Log_time    time.Time `xorm:"log_time index(log_time_index)" `                        // comment '日志中的时间'
+	Create_time time.Time `xorm:"create_time"`                                            // comment '日志新增时间'
+	Update_time time.Time `xorm:"update_time" `                                           // comment '日志更新时间'
+	DeleteFlag  int       `xorm:"delete_flag"`                                            //  comment '删除标记'
 }
 
 type LogContent Content1

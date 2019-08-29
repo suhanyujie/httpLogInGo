@@ -19,6 +19,7 @@ type LogInfo struct {
 type LogMsg struct {
 	Event    string `json:"event"`
 	Key      string `json:"key"`
+	OrderNum string `json:"order_num"`
 	Request  string `json:"request"`
 	Response string `json:"response"`
 	Type     string `json:"type"`
@@ -26,14 +27,14 @@ type LogMsg struct {
 	Time     string `json:"time"`
 }
 
-func ParseLogInfo(logContent []byte) (LogInfo,error) {
+func ParseLogInfo(logContent []byte) (LogInfo, error) {
 	var decodeData = LogInfo{}
 	err := json.Unmarshal(logContent, &decodeData)
-	if err!= nil {
-		return decodeData,err
+	if err != nil {
+		return decodeData, err
 	}
 
-	return decodeData,nil
+	return decodeData, nil
 }
 
 func ParseLogMsg(msgJson string) *LogMsg {
@@ -47,15 +48,15 @@ func ParseLogMsg(msgJson string) *LogMsg {
 }
 
 // 将字符串时间转换为时间格式类型
-func ParseTime(timeStr string) (time.Time,error) {
+func ParseTime(timeStr string) (time.Time, error) {
 	var (
-		t1 time.Time
+		t1  time.Time
 		err error
 	)
-	t1,err = time.Parse("2006-01-02 15:04:05", timeStr)
-	if err!= nil {
-		return t1,err
+	t1, err = time.Parse("2006-01-02 15:04:05", timeStr)
+	if err != nil {
+		return t1, err
 	}
 
-	return t1.UTC(),err
+	return t1.UTC(), err
 }
